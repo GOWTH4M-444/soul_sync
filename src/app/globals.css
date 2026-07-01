@@ -1,0 +1,213 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap');
+
+/* Pure CSS reset — no Tailwind dependency */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+img, video { max-width: 100%; display: block; }
+button { font-family: inherit; cursor: pointer; }
+a { color: inherit; text-decoration: none !important; }
+
+.antialiased { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+.hidden-mobile { display: flex; }
+@media (max-width: 640px) { .hidden-mobile { display: none !important; } }
+
+@media (min-width: 1024px) {
+  .mobile-only-logo { display: none !important; }
+  .desktop-panel-block { display: block !important; }
+  .desktop-grid-2 { grid-template-columns: 1fr 1fr !important; }
+}
+:root {
+  /* Japanese Zen Aesthetic Colors */
+  --bg-primary: #f2efe9; /* Warm Rice Paper / Tatami */
+  --bg-secondary: #e5dfd3;
+  --bg-card: transparent;
+  --bg-card-solid: #f2efe9;
+  
+  --accent-primary: #8c7355; /* Bamboo / Warm Earth */
+  --accent-secondary: #5e6b55; /* Matcha Green */
+  --accent-tertiary: #b05c50; /* Terracotta / Shrine Red */
+  
+  --text-primary: #2d2a26; /* Charcoal / Sumi Ink instead of pure black */
+  --text-muted: #797165; /* Warm Ash */
+  --text-light: #f2efe9; /* Inverse text */
+  
+  --border: rgba(45, 42, 38, 0.15);
+  --border-light: rgba(45, 42, 38, 0.08);
+  
+  --shadow-soft: none;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  /* Smoothly transition background if it changes */
+  transition: background-color 0.8s ease;
+}
+
+/* ── Grain Overlay ── */
+.grain {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
+  opacity: 0.7;
+}
+
+/* ── Minimalist Cards ── */
+.glass, .glass-dark {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+/* ── Typography ── */
+.text-gradient-accent {
+  color: var(--text-primary);
+  /* Removed gradient for flat editorial look */
+}
+
+/* ── Minimalist Buttons ── */
+.btn-primary {
+  background: var(--text-primary);
+  color: var(--text-light);
+  border: 1px solid var(--text-primary);
+  padding: 12px 32px;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.btn-primary:hover {
+  background: transparent;
+  color: var(--text-primary);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  padding: 12px 32px;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.4s ease;
+}
+.btn-ghost:hover {
+  border-color: var(--text-primary);
+}
+
+.btn-beige {
+  background: var(--bg-secondary); 
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  padding: 12px 32px;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.4s ease;
+}
+.btn-beige:hover {
+  border-color: var(--text-primary);
+}
+
+/* ── Chat bubbles ── */
+.chat-user {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 16px 24px;
+  max-width: 75%;
+  align-self: flex-end;
+  color: var(--text-primary);
+}
+.chat-ai {
+  background: var(--bg-secondary);
+  border: none;
+  border-radius: 4px;
+  padding: 16px 24px;
+  max-width: 80%;
+  align-self: flex-start;
+  color: var(--text-primary);
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 0; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+/* ── Minimal Input ── */
+.input-glass {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  color: var(--text-primary);
+  padding: 12px 0;
+  font-size: 15px;
+  font-family: 'Montserrat', sans-serif;
+  transition: all 0.4s ease;
+  outline: none;
+  width: 100%;
+}
+.input-glass:focus {
+  border-bottom-color: var(--text-primary);
+  background: transparent;
+}
+.input-glass::placeholder { color: var(--text-muted); }
+
+/* ── Animations ── */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-4px); }
+}
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-up { animation: fade-in-up 1s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+
+/* ── Nav ── */
+.nav-link {
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none !important;
+  transition: color 0.3s;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.nav-link:hover, .nav-link.active { color: var(--text-primary); }
+
+/* ── Section title ── */
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(36px, 6vw, 64px);
+  font-weight: 400; /* Much thinner, more elegant */
+  line-height: 1.1;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+}
+
+/* ── Responsive ── */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
