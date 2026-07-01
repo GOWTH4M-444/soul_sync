@@ -1,74 +1,157 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
-import Navbar from "@/components/Navbar";
+import { Sun } from "lucide-react";
 
 export default function SignupPage() {
+  const router = useRouter();
   const [form, setForm] = useState({ name: "", email: "", password: "" });
+  const [loading, setLoading] = useState(false);
+
+  const handleSignup = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    setLoading(true);
+    
+    try {
+      const res = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: form.name, email: form.email, password: form.password }),
+      });
+      
+      if (res.ok) {
+        const data = await res.json();
+        sessionStorage.setItem("user", JSON.stringify(data.user)); 
+        sessionStorage.setItem("justLoggedIn", "true");
+        window.dispatchEvent(new Event("authStateChange"));
+        router.push("/profile");
+      } else {
+        const error = await res.json();
+        alert(error.error || "Signup failed");
+        setLoading(false);
+      }
+    } catch (err) {
+      console.error("Signup fetch error:", err);
+      alert("Something went wrong.");
+      setLoading(false);
+    }
+  };
 
   return (
-    <>
-      <Navbar />
-      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: "80px 24px" }}>
-        <div style={{ width: "100%", maxWidth: 440 }}>
-          <div style={{ textAlign: "center", marginBottom: 36 }}>
-            <div style={{ fontSize: 48, marginBottom: 12 }} className="animate-float">🌟</div>
-            <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 30, fontWeight: 700, color: "#e2e8f0", marginBottom: 8 }}>
-              Start Your Journey
-            </h1>
-            <p style={{ color: "#64748b", fontSize: 15 }}>Create your free holistic health account</p>
-          </div>
+    <div style={{ display: "flex", minHeight: "100vh", backgroundColor: "var(--bg-primary)" }}>
+      
+      {/* Right Form Panel (Reversed for variation) */}
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", padding: "40px" }}>
+        
+        {/* Mobile Logo */}
+        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 64 }} className="mobile-only-logo">
+          <Link href="/" style={{ display: "flex", alignItems: "center", gap: 12, textDecoration: "none" }}>
+            <Sun size={28} color="var(--accent-primary)" strokeWidth={1.5} />
+            <span style={{ fontFamily: "var(--font-cormorant), 'Cormorant Garamond', serif", fontSize: 24, color: "var(--text-primary)", letterSpacing: "1px" }}>SoulSync</span>
+          </Link>
+        </div>
 
-          <div className="glass" style={{ padding: "36px 32px" }}>
-            <div style={{ marginBottom: 20 }}>
-              <label style={{ fontSize: 13, fontWeight: 600, color: "#94a3b8", display: "block", marginBottom: 8 }}>Your Name</label>
-              <input
-                type="text"
-                className="input-glass"
-                placeholder="What should we call you?"
-                value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
-              />
-            </div>
-            <div style={{ marginBottom: 20 }}>
-              <label style={{ fontSize: 13, fontWeight: 600, color: "#94a3b8", display: "block", marginBottom: 8 }}>Email</label>
-              <input
-                type="email"
-                className="input-glass"
-                placeholder="you@example.com"
-                value={form.email}
-                onChange={(e) => setForm({ ...form, email: e.target.value })}
-              />
-            </div>
-            <div style={{ marginBottom: 28 }}>
-              <label style={{ fontSize: 13, fontWeight: 600, color: "#94a3b8", display: "block", marginBottom: 8 }}>Password</label>
-              <input
-                type="password"
-                className="input-glass"
-                placeholder="Create a strong password"
-                value={form.password}
-                onChange={(e) => setForm({ ...form, password: e.target.value })}
-              />
+        <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ width: "100%", maxWidth: 420 }}>
+            
+            <div style={{ marginBottom: 48 }}>
+              <h1 style={{ fontFamily: "var(--font-cormorant), 'Cormorant Garamond', serif", fontSize: 48, fontWeight: 400, color: "var(--text-primary)", marginBottom: 12 }}>
+                Join SoulSync
+              </h1>
+              <p style={{ color: "var(--text-muted)", fontSize: 16 }}>Create an account to begin your holistic journey.</p>
             </div>
 
-            <button className="btn-primary" style={{ width: "100%", fontSize: 15, padding: "14px" }}>
-              🌿 Create Account — It's Free
-            </button>
+            <form onSubmit={handleSignup} style={{ display: "flex", flexDirection: "column", gap: 32 }}>
+              
+              <div>
+                <label style={{ fontSize: 12, fontWeight: 500, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "1px", display: "block", marginBottom: 12 }}>Full Name</label>
+                <input
+                  type="text"
+                  style={{
+                    width: "100%", background: "transparent", border: "none", borderBottom: "1px solid var(--border)",
+                    padding: "8px 0", fontSize: 16, color: "var(--text-primary)", outline: "none", transition: "border-color 0.3s"
+                  }}
+                  onFocus={(e) => e.target.style.borderBottomColor = "var(--text-primary)"}
+                  onBlur={(e) => e.target.style.borderBottomColor = "var(--border)"}
+                  placeholder="Your Name"
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  required
+                />
+              </div>
 
-            <p style={{ fontSize: 11, color: "#334155", textAlign: "center", marginTop: 16, lineHeight: 1.6 }}>
-              By signing up you agree to our Terms of Service.<br />
-              Your data is private and never sold.
-            </p>
+              <div>
+                <label style={{ fontSize: 12, fontWeight: 500, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "1px", display: "block", marginBottom: 12 }}>Email</label>
+                <input
+                  type="email"
+                  style={{
+                    width: "100%", background: "transparent", border: "none", borderBottom: "1px solid var(--border)",
+                    padding: "8px 0", fontSize: 16, color: "var(--text-primary)", outline: "none", transition: "border-color 0.3s"
+                  }}
+                  onFocus={(e) => e.target.style.borderBottomColor = "var(--text-primary)"}
+                  onBlur={(e) => e.target.style.borderBottomColor = "var(--border)"}
+                  placeholder="you@example.com"
+                  value={form.email}
+                  onChange={(e) => setForm({ ...form, email: e.target.value })}
+                  required
+                />
+              </div>
 
-            <div style={{ textAlign: "center", marginTop: 16, fontSize: 14, color: "#475569" }}>
-              Already have an account?{" "}
-              <Link href="/login" style={{ color: "#22c55e", fontWeight: 600, textDecoration: "none" }}>
-                Sign in
-              </Link>
-            </div>
+              <div>
+                <label style={{ fontSize: 12, fontWeight: 500, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "1px", display: "block", marginBottom: 12 }}>Password</label>
+                <input
+                  type="password"
+                  style={{
+                    width: "100%", background: "transparent", border: "none", borderBottom: "1px solid var(--border)",
+                    padding: "8px 0", fontSize: 16, color: "var(--text-primary)", outline: "none", transition: "border-color 0.3s"
+                  }}
+                  onFocus={(e) => e.target.style.borderBottomColor = "var(--text-primary)"}
+                  onBlur={(e) => e.target.style.borderBottomColor = "var(--border)"}
+                  placeholder="••••••••"
+                  value={form.password}
+                  onChange={(e) => setForm({ ...form, password: e.target.value })}
+                  required
+                />
+              </div>
+
+              <button 
+                type="submit" 
+                className="btn-primary" 
+                style={{ width: "100%", marginTop: 16, padding: "16px", fontSize: 14 }} 
+                disabled={loading}
+              >
+                {loading ? "Creating Account..." : "Sign Up"}
+              </button>
+
+              <div style={{ textAlign: "center", marginTop: 32, fontSize: 14, color: "var(--text-muted)" }}>
+                Already have an account?{" "}
+                <Link href="/login" style={{ color: "var(--text-primary)", fontWeight: 500, textDecoration: "none", borderBottom: "1px solid var(--text-primary)", paddingBottom: 2 }}>
+                  Sign in here
+                </Link>
+              </div>
+            </form>
           </div>
         </div>
       </div>
-    </>
+
+      {/* Right Art Panel */}
+      <div style={{ 
+        flex: "0 0 45%", 
+        display: "none", 
+        backgroundImage: "url('https://images.unsplash.com/photo-1522383225653-ed111181a951?auto=format&fit=crop&w=2500&q=80')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        borderLeft: "1px solid var(--border)",
+        position: "relative"
+      }} className="hidden-mobile desktop-panel-block">
+        <div style={{ position: "absolute", inset: 0, backgroundColor: "rgba(45, 42, 38, 0.15)" }}></div>
+        <div style={{ position: "absolute", top: 40, right: 40, display: "flex", alignItems: "center", gap: 12 }}>
+          <span style={{ fontFamily: "var(--font-cormorant), 'Cormorant Garamond', serif", fontSize: 24, color: "var(--bg-primary)", letterSpacing: "1px" }}>SoulSync</span>
+          <Sun size={28} color="var(--bg-primary)" strokeWidth={1.5} />
+        </div>
+      </div>
+
+    </div>
   );
 }

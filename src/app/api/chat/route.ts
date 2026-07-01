@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
   try {
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({ 
-      model: "gemini-2.0-flash",
+      model: "gemini-2.5-flash",
       systemInstruction: systemPrompt,
     });
 
@@ -47,6 +47,15 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ reply });
   } catch (err: any) {
     console.error("Gemini API error:", err);
+    
+    // Check for rate limit / quota exceeded
+    if (err.message?.includes("429 Too Many Requests") || err.message?.includes("quota")) {
+      return NextResponse.json(
+        { reply: "⏳ Wow, you're chatting fast! We've hit the temporary rate limit for the Gemini AI. Please wait about 30 seconds and try again!" },
+        { status: 200 }
+      );
+    }
+
     return NextResponse.json(
       { reply: `⚠️ API Error: ${err.message || "Failed to connect to Gemini."}` },
       { status: 200 }

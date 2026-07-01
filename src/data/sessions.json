@@ -1,0 +1,30 @@
+[
+  {
+    "id": "d97ecfdd-b6b7-4388-929e-5e79d9bc9a6c",
+    "userId": "2dafe1ff-1de9-43f7-94f3-bbacd9e80ab9",
+    "token": "c5c4f26ff09633fcddae6499aed1a17320b897c6b6f508173cceac125d4a79d6",
+    "createdAt": "2026-07-01T04:41:22.534Z",
+    "expiresAt": "2026-07-08T04:41:22.534Z"
+  },
+  {
+    "id": "72282e41-c29a-4763-a523-d26dff0c8928",
+    "userId": "f655dbd4-01f2-44d7-92dd-da7cdf1144e4",
+    "token": "8001ac6c22b2b2117ab0b612a7f88506e093d3a0e51a2258635eff629396f827",
+    "createdAt": "2026-07-01T04:43:47.361Z",
+    "expiresAt": "2026-07-08T04:43:47.361Z"
+  },
+  {
+    "id": "17206a11-3167-4bc0-8dd1-86a7465aa04c",
+    "userId": "16fbb326-b784-4f9f-8c86-e3c112aef33e",
+    "token": "85206334942207e4039d3c758ddc2316db5e1debea1cab4c6aa73c6fc3b71664",
+    "createdAt": "2026-07-01T04:52:38.288Z",
+    "expiresAt": "2026-07-08T04:52:38.288Z"
+  },
+  {
+    "id": "1798c5e5-287b-4f0b-9320-4db762f5d959",
+    "userId": "a9602ab8-8a68-41b5-809e-9318a8d1e473",
+    "token": "1cf8634bac2171101682c030709b533627bd43e35384232086d5fb0d4529e99b",
+    "createdAt": "2026-07-01T05:35:19.872Z",
+    "expiresAt": "2026-07-08T05:35:19.872Z"
+  }
+]

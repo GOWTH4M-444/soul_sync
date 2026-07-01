@@ -20,7 +20,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${montserrat.variable} ${cormorant.variable}`}>
-      <body className="bg-cosmic antialiased font-sans">
+      <body className="antialiased font-sans">
+        <div className="grain" aria-hidden="true" />
         <Navbar />
         {children}
       </body>
